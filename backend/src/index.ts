@@ -23,7 +23,7 @@ if (!port) {
 const BASE_URL = '/api';
 
 app.get(`${BASE_URL}/health`, (req: Request, res: Response) => {
-    res.send('Healthy!');
+    res.json({ health: 'healthy!' });
 });
 
 app.get(`${BASE_URL}/products`, (req: Request, res: Response) => {
