@@ -4,10 +4,12 @@ import createProduct from './product/createProduct';
 import getProduct from './product/getProduct';
 import getProducts from './product/getProducts';
 import { Product, ProductDetails } from './product/product';
+import updateProduct from './product/updateProduct';
 import { validateAndConvert } from './validateAndConvert';
 
 const app: Express = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT;
 
 if (!port) {
@@ -48,7 +50,32 @@ app.post<{}, Product, ProductDetails, {}, {}>(
 
         const productDetails = conversionResult.data;
         const productId = createProduct(productDetails);
-        res.send({ productId });
+        res.json({ productId });
+    }
+);
+
+app.put(
+    `${BASE_URL}/product/:product_id`,
+    async (req: Request, res: Response) => {
+        const conversionResult = await validateAndConvert(
+            ProductDetails,
+            req.body
+        );
+
+        if (conversionResult.error)
+            res.status(400).send(conversionResult.error).end();
+
+        const productDetails = conversionResult.data;
+        const productId = updateProduct(
+            parseInt(req.params.product_id),
+            productDetails
+        );
+
+        if (productId === undefined)
+            res.status(400)
+                .send({ errors: ['product not found'] })
+                .end();
+        else res.json({ productId });
     }
 );
 
