@@ -9,8 +9,10 @@ if (!port) {
     exit(1);
 }
 
-app.get('/', (req:Request, res:Response) => {
-    res.send('Hello bar!')
+const BASE_URL = '/api';
+
+app.get(`${BASE_URL}/health`, (req:Request, res:Response) => {
+    res.send('Healthy!')
 })
 
 app.listen(port, ()=> {
