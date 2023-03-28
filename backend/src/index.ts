@@ -1,7 +1,7 @@
 import express, {Express, Request, Response} from "express";
 import { exit } from "process";
-import getProduct from "./getProduct";
-import getProducts from "./getProducts";
+import getProduct from "./product/getProduct";
+import getProducts from "./product/getProducts";
 
 const app: Express = express();
 const port = process.env.PORT;
