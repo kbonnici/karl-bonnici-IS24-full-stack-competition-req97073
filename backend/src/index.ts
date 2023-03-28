@@ -1,5 +1,6 @@
 import express, {Express, Request, Response} from "express";
 import { exit } from "process";
+import getProduct from "./getProduct";
 import getProducts from "./getProducts";
 
 const app: Express = express();
@@ -18,6 +19,14 @@ app.get(`${BASE_URL}/health`, (req:Request, res:Response) => {
 
 app.get(`${BASE_URL}/products`, (req: Request, res: Response) => {
     res.send(getProducts());
+})
+
+app.get(`${BASE_URL}/product/:product_id`, (req: Request, res:Response)=> {
+    const product_id = parseInt(req.params.product_id);
+    const product = getProduct(product_id);
+    
+    if (!product) res.sendStatus(404).end();
+    res.send(product);
 })
 
 app.listen(port, ()=> {
