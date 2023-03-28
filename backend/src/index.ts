@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from 'express';
 import { exit } from 'process';
 import createProduct from './product/createProduct';
+import deleteProduct from './product/deleteProduct';
 import getProduct from './product/getProduct';
 import getProducts from './product/getProducts';
 import { Product, ProductDetails } from './product/product';
@@ -34,7 +35,7 @@ app.get(`${BASE_URL}/product/:product_id`, (req: Request, res: Response) => {
     const product = getProduct(product_id);
 
     if (!product) res.sendStatus(404).end();
-    res.send(product);
+    else res.send(product);
 });
 
 app.post<{}, Product, ProductDetails, {}, {}>(
@@ -45,8 +46,10 @@ app.post<{}, Product, ProductDetails, {}, {}>(
             req.body
         );
 
-        if (conversionResult.error)
+        if (conversionResult.error) {
             res.status(400).send(conversionResult.error).end();
+            return;
+        }
 
         const productDetails = conversionResult.data;
         const productId = createProduct(productDetails);
@@ -62,8 +65,10 @@ app.put(
             req.body
         );
 
-        if (conversionResult.error)
+        if (conversionResult.error) {
             res.status(400).send(conversionResult.error).end();
+            return;
+        }
 
         const productDetails = conversionResult.data;
         const productId = updateProduct(
@@ -78,6 +83,17 @@ app.put(
         else res.json({ productId });
     }
 );
+
+app.delete(`${BASE_URL}/product/:product_id`, (req: Request, res: Response) => {
+    const productId = parseInt(req.params.product_id);
+
+    const deletedProductId = deleteProduct(productId);
+    if (deletedProductId !== productId)
+        res.status(400)
+            .send({ errors: ['product not found'] })
+            .end();
+    else res.json({ productId });
+});
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
