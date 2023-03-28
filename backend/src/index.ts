@@ -31,10 +31,11 @@ app.get(`${BASE_URL}/products`, (req: Request, res: Response) => {
 });
 
 app.get(`${BASE_URL}/product/:product_id`, (req: Request, res: Response) => {
-    const product_id = parseInt(req.params.product_id);
-    const product = getProduct(product_id);
+    const productId = parseInt(req.params.product_id);
+    const product = getProduct(productId);
 
-    if (!product) res.sendStatus(404).end();
+    if (!product)
+        res.status(404).send({ errors: [`product ${productId} not found`] });
     else res.send(product);
 });
 
@@ -77,8 +78,8 @@ app.put(
         );
 
         if (productId === undefined)
-            res.status(400)
-                .send({ errors: ['product not found'] })
+            res.status(404)
+                .send({ errors: [`product ${productId} not found`] })
                 .end();
         else res.json({ productId });
     }
@@ -89,8 +90,8 @@ app.delete(`${BASE_URL}/product/:product_id`, (req: Request, res: Response) => {
 
     const deletedProductId = deleteProduct(productId);
     if (deletedProductId !== productId)
-        res.status(400)
-            .send({ errors: ['product not found'] })
+        res.status(404)
+            .send({ errors: [`product ${productId} not found`] })
             .end();
     else res.json({ productId });
 });
