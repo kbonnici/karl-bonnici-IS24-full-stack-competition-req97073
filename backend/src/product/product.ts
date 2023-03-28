@@ -5,5 +5,5 @@ export type Product = {
     developers: string[];
     scrumMasterName: string;
     startDate: string;
-    methodology: "agile" | "waterfall";
+    methodology: 'agile' | 'waterfall';
 };
