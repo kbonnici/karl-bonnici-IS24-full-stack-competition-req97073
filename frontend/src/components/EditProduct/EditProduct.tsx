@@ -7,6 +7,33 @@ import ControlledAlert from '../ControlledAlert/ControlledAlert';
 import Header from '../Header/Header';
 import ProductForm from '../ProductForm/ProductForm';
 
+const updateProduct = async (
+  productId: string,
+  productName: string,
+  productOwner: string,
+  developers: string,
+  startDate: string,
+  scrumMasterName: string,
+  methodology: string
+) => {
+  const response = await fetch(`http://localhost:80/api/product/${productId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      productName,
+      productOwnerName: productOwner,
+      developers,
+      startDate,
+      scrumMasterName,
+      methodology,
+    }),
+  });
+
+  return response;
+};
+
 type EditProductProps = {
   productId: string;
 };
@@ -24,6 +51,31 @@ function EditProduct(props: EditProductProps) {
   const [startDate, setStartDate] = useState('');
   const [methodology, setMethodology] = useState('');
   const navigate = useNavigate();
+
+  const handleSave = async () => {
+    try {
+      const response = await updateProduct(
+        productId.toString(),
+        productName,
+        productOwner,
+        developers,
+        startDate,
+        scrumMasterName,
+        methodology
+      );
+
+      if (!response.ok) {
+        setAlertText(JSON.stringify(await response.json()));
+        setAlertVisible(true);
+      } else {
+        // navigate back to landing page
+        navigate('/');
+      }
+    } catch {
+      setAlertText('Failed to save changes');
+      setAlertVisible(true);
+    }
+  };
 
   useEffect(() => {
     const getProduct = async (id: number) => {
@@ -91,40 +143,7 @@ function EditProduct(props: EditProductProps) {
         <Button
           variant="contained"
           style={{ marginRight: '10px' }}
-          onClick={async () => {
-            try {
-              const response = await fetch(
-                `http://localhost:80/api/product/${productId}`,
-                {
-                  method: 'PUT',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    productName,
-                    productOwnerName: productOwner,
-                    developers,
-                    startDate,
-                    scrumMasterName,
-                    methodology,
-                  }),
-                }
-              );
-
-              const json = await response.json();
-
-              if (!response.ok) {
-                setAlertText(JSON.stringify(json));
-                setAlertVisible(true);
-              } else {
-                // navigate back to landing page
-                navigate('/');
-              }
-            } catch {
-              setAlertText('Failed to save changes');
-              setAlertVisible(true);
-            }
-          }}
+          onClick={handleSave}
         >
           Save Changes
         </Button>
