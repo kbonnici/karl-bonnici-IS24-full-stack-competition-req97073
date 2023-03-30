@@ -1,4 +1,4 @@
-import { Button, Link, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 
 function NotFound() {

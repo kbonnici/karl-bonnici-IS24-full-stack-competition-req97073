@@ -1,9 +1,9 @@
 import { Container } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import EditProduct from './components/EditProduct';
-import LandingPage from './components/LandingPage';
-import NotFound from './components/NotFound';
+import EditProduct from './components/EditProduct/EditProduct';
+import LandingPage from './components/LandingPage/LandingPage';
+import NotFound from './components/NotFound/NotFound';
 
 function App() {
   const location = useLocation();
