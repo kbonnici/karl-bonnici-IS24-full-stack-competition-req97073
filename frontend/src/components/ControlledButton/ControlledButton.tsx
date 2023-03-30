@@ -25,7 +25,7 @@ function ControlledButton({
       color={color}
       href={href}
       style={{
-        left: '60%',
+        left: '20%',
         position: 'relative',
         minWidth: '100px',
         marginRight: '10px',

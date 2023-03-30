@@ -5,6 +5,13 @@ import { GridRowProduct, Product } from '../../utils/types';
 import ControlledButton from '../ControlledButton/ControlledButton';
 import Header from '../Header/Header';
 import ControlledAlert from '../ControlledAlert/ControlledAlert';
+import {
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material';
 
 const columns: GridColDef[] = [
   { field: 'productId', headerName: 'Product ID', width: 125 },
@@ -22,6 +29,11 @@ function LandingPage() {
   const [alertText, setAlertText] = useState('');
   const [selectedRowId, setSelectedRowId] = useState(-1);
   const [loading, setLoading] = useState(true);
+
+  // bonus
+  const [filterText, setFilterText] = useState('');
+  const [filterType, setFilterType] = useState('scrumMasterName');
+  const [filteredRows, setFilteredRows] = useState(rows);
 
   const getProducts = async () => {
     try {
@@ -42,6 +54,22 @@ function LandingPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!filterText.length) {
+      setRows(rows);
+      setFilteredRows(rows);
+      return;
+    }
+
+    if (filterType !== 'scrumMasterName' && filterType !== 'developers') return;
+
+    let newRows = rows;
+    newRows = newRows.filter((p: GridRowProduct) =>
+      p[filterType as keyof typeof p].toString().includes(filterText)
+    );
+    setFilteredRows(newRows);
+  }, [filterText, filterType]);
 
   const deleteProduct = async (productId: number) => {
     try {
@@ -79,34 +107,54 @@ function LandingPage() {
         setVisible={setAlertVisible}
         text={alertText}
       />
-
-      <ControlledButton
-        variant="outlined"
-        disabled={selectedRowId < 0}
-        text={'edit'}
-        href={`/edit/${rows[selectedRowId]?.productId}`}
-      />
-      <ControlledButton
-        variant="contained"
-        disabled={selectedRowId < 0}
-        color={'warning'}
-        text={'delete'}
-        onClick={async () => {
-          const productId = rows[selectedRowId]?.productId;
-          if (!productId) return;
-          deleteProduct(productId);
-        }}
-      />
-      <ControlledButton
-        href={'/create'}
-        variant="contained"
-        color={'success'}
-        text={'create'}
-      />
+      <div style={{ display: 'flex' }}>
+        <FormControl>
+          <InputLabel>Search Criteria</InputLabel>
+          <Select
+            value={filterType}
+            label={'Criteria'}
+            style={{ minWidth: '150px', marginRight: '10px' }}
+            onChange={(e) => setFilterType(e.target.value as string)}
+          >
+            <MenuItem value="scrumMasterName">Scrum Master</MenuItem>
+            <MenuItem value="developers">Developer</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl>
+          <InputLabel>Criteria</InputLabel>
+          <Input
+            value={filterText}
+            onChange={(e) => setFilterText(e.target.value)}
+          />
+        </FormControl>
+        <ControlledButton
+          variant="outlined"
+          disabled={selectedRowId < 0}
+          text={'edit'}
+          href={`/edit/${rows[selectedRowId]?.productId}`}
+        />
+        <ControlledButton
+          variant="contained"
+          disabled={selectedRowId < 0}
+          color={'warning'}
+          text={'delete'}
+          onClick={async () => {
+            const productId = rows[selectedRowId]?.productId;
+            if (!productId) return;
+            deleteProduct(productId);
+          }}
+        />
+        <ControlledButton
+          href={'/create'}
+          variant="contained"
+          color={'success'}
+          text={'create'}
+        />
+      </div>
 
       <div style={{ height: '75vh', width: '100%' }}>
         <DataGrid
-          rows={rows}
+          rows={filterText.length > 0 ? filteredRows : rows}
           loading={loading}
           columns={columns}
           onRowSelectionModelChange={(selectedRows: GridRowSelectionModel) => {
