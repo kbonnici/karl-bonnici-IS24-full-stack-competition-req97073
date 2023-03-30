@@ -1,6 +1,7 @@
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { GridRowProduct, Product } from '../../types';
+import ControlledButton from '../ControlledButton/ControlledButton';
 import LandingPageAlert from './LandingPageAlert';
 import LandingPageHeader from './LandingPageHeader';
 
@@ -17,6 +18,7 @@ const columns: GridColDef[] = [
 function LandingPage() {
   const [rows, setRows] = useState<GridRowProduct[]>([]);
   const [alertVisible, setAlertVisible] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(-1);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -47,8 +49,27 @@ function LandingPage() {
       <LandingPageHeader />
       <LandingPageAlert visible={alertVisible} setVisible={setAlertVisible} />
 
+      <ControlledButton
+        variant="contained"
+        disabled={selectedRowId < 0}
+        text={'edit'}
+      />
+      <ControlledButton
+        variant="contained"
+        disabled={selectedRowId < 0}
+        text={'delete'}
+      />
+
       <div style={{ height: '75vh', width: '100%' }}>
-        <DataGrid rows={rows} columns={columns} />
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          onRowSelectionModelChange={(selectedRows: GridRowSelectionModel) => {
+            if (!selectedRows.length) return;
+            const rowId = selectedRows[0] as number;
+            setSelectedRowId(rowId);
+          }}
+        />
       </div>
     </>
   );
