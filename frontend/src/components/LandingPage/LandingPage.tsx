@@ -65,9 +65,11 @@ function LandingPage() {
           rows={rows}
           columns={columns}
           onRowSelectionModelChange={(selectedRows: GridRowSelectionModel) => {
-            if (!selectedRows.length) return;
-            const rowId = selectedRows[0] as number;
-            setSelectedRowId(rowId);
+            if (!selectedRows.length) setSelectedRowId(-1);
+            else {
+              const rowId = selectedRows[0] as number;
+              setSelectedRowId(rowId);
+            }
           }}
         />
       </div>
