@@ -1,14 +1,14 @@
 import { Typography } from '@mui/material';
 
-function LandingPageHeader() {
+function Header({ text }: { text: string }) {
   return (
     <Typography
       style={{ marginBottom: '50px', marginTop: '50px' }}
       variant="h4"
     >
-      Product Management App
+      {text}
     </Typography>
   );
 }
 
-export default LandingPageHeader;
+export default Header;

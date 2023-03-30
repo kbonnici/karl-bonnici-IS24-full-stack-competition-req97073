@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import appendRowIdToProduct from '../../utils/appendRowIdToProduct';
 import { GridRowProduct, Product } from '../../utils/types';
 import ControlledButton from '../ControlledButton/ControlledButton';
-import LandingPageAlert from '../ControlledAlert/ControlledAlert';
-import LandingPageHeader from './LandingPageHeader';
+import Header from '../Header/Header';
 import ControlledAlert from '../ControlledAlert/ControlledAlert';
 
 const columns: GridColDef[] = [
@@ -42,7 +41,7 @@ function LandingPage() {
 
   return (
     <>
-      <LandingPageHeader />
+      <Header text={'Product Management App'} />
       <ControlledAlert
         visible={alertVisible}
         setVisible={setAlertVisible}
