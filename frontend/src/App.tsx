@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import EditProduct from './components/EditProduct';
 import LandingPage from './components/LandingPage';
+import NotFound from './components/NotFound';
 
 function App() {
   const location = useLocation();
@@ -26,6 +27,7 @@ function App() {
           path="/edit/:product_id"
           element={<EditProduct productId={productId} />}
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Container>
   );
