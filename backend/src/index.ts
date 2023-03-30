@@ -7,10 +7,17 @@ import getProducts from './product/getProducts';
 import { Product, ProductDetails } from './product/product';
 import updateProduct from './product/updateProduct';
 import { validateAndConvert } from './validateAndConvert';
+import cors from 'cors';
+
+const corsOptions = {
+    // only allow my frontend to call this backend api
+    origin: 'http://localhost:5173',
+};
 
 const app: Express = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOptions));
 const port = process.env.PORT;
 
 if (!port) {
@@ -58,6 +65,8 @@ app.post<{}, Product, ProductDetails, {}, {}>(
     }
 );
 
+// enable pre-flight OPTIONS request for cors to work
+app.options(`${BASE_URL}/product/:product_id`);
 app.put(
     `${BASE_URL}/product/:product_id`,
     async (req: Request, res: Response) => {
@@ -85,6 +94,8 @@ app.put(
     }
 );
 
+// enable pre-flight OPTIONS request for cors to work
+app.options(`${BASE_URL}/product/:product_id`);
 app.delete(`${BASE_URL}/product/:product_id`, (req: Request, res: Response) => {
     const productId = parseInt(req.params.product_id);
 
