@@ -3,6 +3,7 @@ import { Container } from '@mui/system';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { GridRowProduct, Product } from '../../types';
+import LandingPageHeader from './LandingPageHeader';
 
 const columns: GridColDef[] = [
   { field: 'productId', headerName: 'Product ID', width: 125 },
@@ -37,17 +38,12 @@ function LandingPage() {
   }, []);
 
   return (
-    <div>
-      <Typography
-        style={{ marginBottom: '50px', marginTop: '50px' }}
-        variant="h4"
-      >
-        Product Management App
-      </Typography>
+    <>
+      <LandingPageHeader />
       <div style={{ height: '75vh', width: '100%' }}>
         <DataGrid rows={rows} columns={columns} />
       </div>
-    </div>
+    </>
   );
 }
 
