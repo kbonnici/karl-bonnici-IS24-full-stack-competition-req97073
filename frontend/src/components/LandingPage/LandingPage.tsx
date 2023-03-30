@@ -66,7 +66,12 @@ function LandingPage() {
         color={'warning'}
         text={'delete'}
       />
-      <ControlledButton variant="contained" color={'success'} text={'create'} />
+      <ControlledButton
+        href={'/create'}
+        variant="contained"
+        color={'success'}
+        text={'create'}
+      />
 
       <div style={{ height: '75vh', width: '100%' }}>
         <DataGrid
