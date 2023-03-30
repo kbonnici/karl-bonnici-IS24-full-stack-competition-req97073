@@ -1,6 +1,6 @@
 import { Button, Typography } from '@mui/material';
 import { Container } from '@mui/system';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import ControlledAlert from '../ControlledAlert/ControlledAlert';
 import Header from '../Header/Header';
 import ProductForm from '../ProductForm/ProductForm';
@@ -13,6 +13,14 @@ function EditProduct(props: EditProductProps) {
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertText, setAlertText] = useState('');
+
+  // product information
+  const [productName, setProductName] = useState('');
+  const [productOwner, setProductOwner] = useState('');
+  const [developers, setDevelopers] = useState('');
+  const [scrumMasterName, setScrumMasterName] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [methodology, setMethodology] = useState('');
 
   useEffect(() => {
     const getProduct = async (id: number) => {
@@ -54,7 +62,20 @@ function EditProduct(props: EditProductProps) {
         text={alertText}
       />
 
-      <ProductForm />
+      <ProductForm
+        productName={productName}
+        setProductName={setProductName}
+        productOwner={productOwner}
+        setProductOwner={setProductOwner}
+        developers={developers}
+        setDevelopers={setDevelopers}
+        scrumMasterName={scrumMasterName}
+        setScrumMasterName={setScrumMasterName}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        methodology={methodology}
+        setMethodology={setMethodology}
+      />
     </Container>
   );
 }
