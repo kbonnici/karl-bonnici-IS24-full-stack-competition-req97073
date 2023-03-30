@@ -3,24 +3,13 @@ import { Container } from '@mui/system';
 import { useEffect, useState } from 'react';
 import ControlledAlert from '../ControlledAlert/ControlledAlert';
 import Header from '../Header/Header';
+import ProductForm from '../ProductForm/ProductForm';
 
 type EditProductProps = {
-  productId?: string;
+  productId: string;
 };
 function EditProduct(props: EditProductProps) {
-  if (!props.productId) return <Typography>Undefined product ID</Typography>;
-
   const productId = parseInt(props.productId);
-  if (isNaN(productId)) {
-    return (
-      <Container maxWidth="sm">
-        <Typography variant="h4">Invalid Product ID</Typography>
-        <Button variant="contained" style={{ marginTop: '10px' }} href="/">
-          Return to Landing Page
-        </Button>
-      </Container>
-    );
-  }
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertText, setAlertText] = useState('');
@@ -40,8 +29,21 @@ function EditProduct(props: EditProductProps) {
       }
     };
 
-    getProduct(productId).catch(console.error);
-  }, []);
+    if (productId) {
+      getProduct(productId).catch(console.error);
+    }
+  }, [productId]);
+
+  if (isNaN(productId)) {
+    return (
+      <Container maxWidth="sm">
+        <Typography variant="h4">Invalid Product ID</Typography>
+        <Button variant="contained" style={{ marginTop: '10px' }} href="/">
+          Return to Landing Page
+        </Button>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="sm">
@@ -51,6 +53,8 @@ function EditProduct(props: EditProductProps) {
         setVisible={setAlertVisible}
         text={alertText}
       />
+
+      <ProductForm />
     </Container>
   );
 }
