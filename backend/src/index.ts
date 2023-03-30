@@ -11,13 +11,16 @@ import cors from 'cors';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
+const port = process.env.PORT;
 const swaggerDefinition = {
     openapi: '3.0.0',
     info: {
         title: 'Express API for Product Management App',
         version: '1.0.0',
     },
-    servers: [{ url: 'http://localhost:80/api', description: 'API Server' }],
+    servers: [
+        { url: `http://localhost:${port}/api`, description: 'API Server' },
+    ],
 };
 
 const swaggerOptions = {
@@ -37,7 +40,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use('/api/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-const port = process.env.PORT;
 
 if (!port) {
     console.error(
