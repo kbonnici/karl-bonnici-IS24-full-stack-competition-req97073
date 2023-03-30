@@ -5,11 +5,10 @@ type TextFieldProps = {
   value: string;
   setValue: (v: SetStateAction<string>) => void;
   placeholder?: string;
-  required?: boolean;
 };
-function TextField({ placeholder, required, value, setValue }: TextFieldProps) {
+function TextField({ placeholder, value, setValue }: TextFieldProps) {
   return (
-    <FormControl required={required || false} style={{ marginBottom: '20px' }}>
+    <FormControl required={true} style={{ marginBottom: '20px' }}>
       <Input
         placeholder={placeholder}
         value={value}
