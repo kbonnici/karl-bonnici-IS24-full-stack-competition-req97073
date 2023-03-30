@@ -1,6 +1,7 @@
 import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
-import { GridRowProduct, Product } from '../../types';
+import appendRowIdToProduct from '../../utils/appendRowIdToProduct';
+import { GridRowProduct, Product } from '../../utils/types';
 import ControlledButton from '../ControlledButton/ControlledButton';
 import LandingPageAlert from './LandingPageAlert';
 import LandingPageHeader from './LandingPageHeader';
@@ -26,13 +27,7 @@ function LandingPage() {
         const response = await fetch('http://localhost:80/api/products');
         const data: Product[] = await response.json();
 
-        const rowData: GridRowProduct[] = [];
-        for (let i = 0; i < data.length; i++) {
-          rowData.push({
-            id: i,
-            ...data[i],
-          });
-        }
+        const rowData = appendRowIdToProduct(data);
 
         setRows(rowData);
         setAlertVisible(false);
