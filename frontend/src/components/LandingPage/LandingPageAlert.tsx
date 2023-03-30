@@ -8,7 +8,11 @@ type LandingPageAlertProps = {
 
 function LandingPageAlert({ visible, setVisible }: LandingPageAlertProps) {
   return visible ? (
-    <Alert severity="error" onClose={() => setVisible(false)}>
+    <Alert
+      severity="error"
+      onClose={() => setVisible(false)}
+      style={{ maxWidth: '95%' }}
+    >
       <AlertTitle>Error</AlertTitle>
       Failed to fetch products!
     </Alert>
