@@ -24,13 +24,16 @@ function LandingPage() {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const response = await fetch('http://localhost:80/api/products');
-        const data: Product[] = await response.json();
+        // simulate api taking a second to respond
+        setTimeout(async () => {
+          const response = await fetch('http://localhost:80/api/products');
+          const data: Product[] = await response.json();
 
-        const rowData = appendRowIdToProduct(data);
+          const rowData = appendRowIdToProduct(data);
 
-        setRows(rowData);
-        setAlertVisible(false);
+          setRows(rowData);
+          setAlertVisible(false);
+        }, 1000);
       } catch {
         setAlertVisible(true);
       }
