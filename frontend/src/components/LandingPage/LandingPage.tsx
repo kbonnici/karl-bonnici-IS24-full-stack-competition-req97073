@@ -20,6 +20,7 @@ function LandingPage() {
   const [rows, setRows] = useState<GridRowProduct[]>([]);
   const [alertVisible, setAlertVisible] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(-1);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -33,9 +34,11 @@ function LandingPage() {
 
           setRows(rowData);
           setAlertVisible(false);
+          setLoading(false);
         }, 1000);
       } catch {
         setAlertVisible(true);
+        setLoading(false);
       }
     };
 
@@ -68,6 +71,7 @@ function LandingPage() {
       <div style={{ height: '75vh', width: '100%' }}>
         <DataGrid
           rows={rows}
+          loading={loading}
           columns={columns}
           onRowSelectionModelChange={(selectedRows: GridRowSelectionModel) => {
             if (!selectedRows.length) setSelectedRowId(-1);
