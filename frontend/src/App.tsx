@@ -20,7 +20,7 @@ function App() {
   }, []);
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
