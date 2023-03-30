@@ -1,12 +1,13 @@
 import { Alert, AlertTitle } from '@mui/material';
 import { SetStateAction } from 'react';
 
-type LandingPageAlertProps = {
+type ControlledAlertProps = {
   visible: boolean;
   setVisible: (visible: SetStateAction<boolean>) => void;
+  text: string;
 };
 
-function LandingPageAlert({ visible, setVisible }: LandingPageAlertProps) {
+function ControlledAlert({ visible, setVisible, text }: ControlledAlertProps) {
   return visible ? (
     <Alert
       severity="error"
@@ -14,11 +15,11 @@ function LandingPageAlert({ visible, setVisible }: LandingPageAlertProps) {
       style={{ maxWidth: '95%' }}
     >
       <AlertTitle>Error</AlertTitle>
-      Failed to fetch products!
+      {text}
     </Alert>
   ) : (
     <></>
   );
 }
 
-export default LandingPageAlert;
+export default ControlledAlert;

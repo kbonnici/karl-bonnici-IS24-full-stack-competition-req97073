@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 import appendRowIdToProduct from '../../utils/appendRowIdToProduct';
 import { GridRowProduct, Product } from '../../utils/types';
 import ControlledButton from '../ControlledButton/ControlledButton';
-import LandingPageAlert from './LandingPageAlert';
+import LandingPageAlert from '../ControlledAlert/ControlledAlert';
 import LandingPageHeader from './LandingPageHeader';
+import ControlledAlert from '../ControlledAlert/ControlledAlert';
 
 const columns: GridColDef[] = [
   { field: 'productId', headerName: 'Product ID', width: 125 },
@@ -42,7 +43,11 @@ function LandingPage() {
   return (
     <>
       <LandingPageHeader />
-      <LandingPageAlert visible={alertVisible} setVisible={setAlertVisible} />
+      <ControlledAlert
+        visible={alertVisible}
+        setVisible={setAlertVisible}
+        text={'Unable to fetch products!'}
+      />
 
       <ControlledButton
         variant="outlined"
