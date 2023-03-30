@@ -1,6 +1,7 @@
 import { Container } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import CreateProduct from './components/CreateProduct/CreateProduct';
 import EditProduct from './components/EditProduct/EditProduct';
 import LandingPage from './components/LandingPage/LandingPage';
 import NotFound from './components/NotFound/NotFound';
@@ -23,6 +24,7 @@ function App() {
     <Container maxWidth="md">
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/create" element={<CreateProduct />} />
         <Route
           path="/edit/:product_id"
           element={<EditProduct productId={productId || 'NaN'} />}
