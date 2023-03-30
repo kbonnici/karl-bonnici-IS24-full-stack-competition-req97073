@@ -1,6 +1,7 @@
 import { Button, Typography } from '@mui/material';
 import { Container } from '@mui/system';
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Product } from '../../utils/types';
 import ControlledAlert from '../ControlledAlert/ControlledAlert';
 import Header from '../Header/Header';
 import ProductForm from '../ProductForm/ProductForm';
@@ -26,11 +27,18 @@ function EditProduct(props: EditProductProps) {
     const getProduct = async (id: number) => {
       try {
         const response = await fetch(`http://localhost:80/api/product/${id}`);
-        const data: any = await response.json();
+        const data: { errors: string[] } | Product = await response.json();
 
-        if (data.errors) {
+        if ('errors' in data) {
           setAlertVisible(true);
           setAlertText(data.errors.toString());
+        } else {
+          setProductName(data.productName);
+          setProductOwner(data.productOwnerName);
+          setDevelopers(data.developers.toString());
+          setScrumMasterName(data.scrumMasterName);
+          setStartDate(data.startDate);
+          setMethodology(data.methodology);
         }
       } catch {
         setAlertVisible(true);
