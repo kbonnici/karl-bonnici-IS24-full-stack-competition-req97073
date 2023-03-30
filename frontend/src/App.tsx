@@ -25,7 +25,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route
           path="/edit/:product_id"
-          element={<EditProduct productId={productId} />}
+          element={<EditProduct productId={productId || 'NaN'} />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
