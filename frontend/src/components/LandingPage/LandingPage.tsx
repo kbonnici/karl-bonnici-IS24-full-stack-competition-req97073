@@ -19,31 +19,57 @@ const columns: GridColDef[] = [
 function LandingPage() {
   const [rows, setRows] = useState<GridRowProduct[]>([]);
   const [alertVisible, setAlertVisible] = useState(false);
+  const [alertText, setAlertText] = useState('');
   const [selectedRowId, setSelectedRowId] = useState(-1);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        // simulate api taking a second to respond
-        setTimeout(async () => {
-          const response = await fetch('http://localhost:80/api/products');
-          const data: Product[] = await response.json();
+  const getProducts = async () => {
+    try {
+      // simulate api taking a second to respond
+      setTimeout(async () => {
+        const response = await fetch('http://localhost:80/api/products');
+        const data: Product[] = await response.json();
 
-          const rowData = appendRowIdToProduct(data);
+        const rowData = appendRowIdToProduct(data);
 
-          setRows(rowData);
-          setAlertVisible(false);
-          setLoading(false);
-        }, 1000);
-      } catch {
-        setAlertVisible(true);
+        setRows(rowData);
+        setAlertVisible(false);
         setLoading(false);
-      }
-    };
+      }, 1000);
+    } catch {
+      setAlertVisible(true);
+      setAlertText('Unable to fetch products');
+      setLoading(false);
+    }
+  };
 
+  const deleteProduct = async (productId: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:80/api/product/${productId}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      const json = await response.json();
+      if ('productId' in json) {
+        setLoading(true);
+        getProducts().catch(console.error);
+      } else {
+        // product doesnt exist
+        setAlertText(JSON.stringify(json));
+        setAlertVisible(true);
+      }
+    } catch {
+      setAlertVisible(true);
+      setAlertText(`failed to delete product ${productId}`);
+    }
+  };
+
+  useEffect(() => {
     getProducts().catch(console.error);
-  }, []);
+  }, [rows]);
 
   return (
     <>
@@ -51,7 +77,7 @@ function LandingPage() {
       <ControlledAlert
         visible={alertVisible}
         setVisible={setAlertVisible}
-        text={'Unable to fetch products!'}
+        text={alertText}
       />
 
       <ControlledButton
@@ -65,6 +91,11 @@ function LandingPage() {
         disabled={selectedRowId < 0}
         color={'warning'}
         text={'delete'}
+        onClick={async () => {
+          const productId = rows[selectedRowId]?.productId;
+          if (!productId) return;
+          deleteProduct(productId);
+        }}
       />
       <ControlledButton
         href={'/create'}
