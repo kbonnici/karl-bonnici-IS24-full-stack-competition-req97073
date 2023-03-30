@@ -5,12 +5,14 @@ type ControlledButtonProps = {
   disabled?: boolean;
   color?: 'info' | 'warning' | 'success' | 'error';
   text: string;
+  href?: string;
 };
 function ControlledButton({
   variant,
   disabled,
   color,
   text,
+  href,
 }: ControlledButtonProps) {
   return (
     <Button
@@ -18,6 +20,7 @@ function ControlledButton({
       disabled={disabled || false}
       size="large"
       color={color}
+      href={href}
       style={{
         left: '60%',
         position: 'relative',
