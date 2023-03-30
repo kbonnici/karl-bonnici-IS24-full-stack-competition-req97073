@@ -53,6 +53,7 @@ function LandingPage() {
         variant="outlined"
         disabled={selectedRowId < 0}
         text={'edit'}
+        href={`/edit/${rows[selectedRowId]?.productId}`}
       />
       <ControlledButton
         variant="contained"
