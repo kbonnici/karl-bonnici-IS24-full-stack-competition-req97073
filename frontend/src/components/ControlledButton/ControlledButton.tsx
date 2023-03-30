@@ -2,14 +2,14 @@ import { Button } from '@mui/material';
 
 type ControlledButtonProps = {
   variant?: 'text' | 'outlined' | 'contained';
-  disabled: boolean;
+  disabled?: boolean;
   text: string;
 };
 function ControlledButton({ variant, disabled, text }: ControlledButtonProps) {
   return (
     <Button
       variant={variant}
-      disabled={disabled}
+      disabled={disabled || false}
       size="large"
       style={{
         left: '75%',
