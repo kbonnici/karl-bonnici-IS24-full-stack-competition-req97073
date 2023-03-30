@@ -1,8 +1,9 @@
-import { Typography } from '@mui/material';
+import { Alert, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { GridRowProduct, Product } from '../../types';
+import LandingPageAlert from './LandingPageAlert';
 import LandingPageHeader from './LandingPageHeader';
 
 const columns: GridColDef[] = [
@@ -17,21 +18,27 @@ const columns: GridColDef[] = [
 
 function LandingPage() {
   const [rows, setRows] = useState<GridRowProduct[]>([]);
+  const [alertVisible, setAlertVisible] = useState(false);
 
   useEffect(() => {
     const getProducts = async () => {
-      const response = await fetch('http://localhost:80/api/products');
-      const data: Product[] = await response.json();
+      try {
+        const response = await fetch('http://localhost:80/api/products');
+        const data: Product[] = await response.json();
 
-      const rowData: GridRowProduct[] = [];
-      for (let i = 0; i < data.length; i++) {
-        rowData.push({
-          id: i,
-          ...data[i],
-        });
+        const rowData: GridRowProduct[] = [];
+        for (let i = 0; i < data.length; i++) {
+          rowData.push({
+            id: i,
+            ...data[i],
+          });
+        }
+
+        setRows(rowData);
+        setAlertVisible(false);
+      } catch {
+        setAlertVisible(true);
       }
-
-      setRows(rowData);
     };
 
     getProducts().catch(console.error);
@@ -40,6 +47,8 @@ function LandingPage() {
   return (
     <>
       <LandingPageHeader />
+      <LandingPageAlert visible={alertVisible} setVisible={setAlertVisible} />
+
       <div style={{ height: '75vh', width: '100%' }}>
         <DataGrid rows={rows} columns={columns} />
       </div>
