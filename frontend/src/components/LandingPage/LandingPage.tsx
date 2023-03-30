@@ -45,15 +45,17 @@ function LandingPage() {
       <LandingPageAlert visible={alertVisible} setVisible={setAlertVisible} />
 
       <ControlledButton
-        variant="contained"
+        variant="outlined"
         disabled={selectedRowId < 0}
         text={'edit'}
       />
       <ControlledButton
         variant="contained"
         disabled={selectedRowId < 0}
+        color={'warning'}
         text={'delete'}
       />
+      <ControlledButton variant="contained" color={'success'} text={'create'} />
 
       <div style={{ height: '75vh', width: '100%' }}>
         <DataGrid
