@@ -6,6 +6,7 @@ type ControlledButtonProps = {
   color?: 'info' | 'warning' | 'success' | 'error';
   text: string;
   href?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 function ControlledButton({
   variant,
@@ -13,9 +14,11 @@ function ControlledButton({
   color,
   text,
   href,
+  onClick,
 }: ControlledButtonProps) {
   return (
     <Button
+      onClick={onClick}
       variant={variant}
       disabled={disabled || false}
       size="large"
