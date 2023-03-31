@@ -54,6 +54,11 @@ const BASE_URL = '/api';
  * @swagger
  * components:
  *  schemas:
+ *      NotFoundError:
+ *          type: array
+ *          items:
+ *              type: string
+ *          example: ["product 1897 not found"]
  *      Errors:
  *          type: array
  *          items:
@@ -171,6 +176,13 @@ app.get(`${BASE_URL}/products`, (req: Request, res: Response) => {
  *                      schema:
  *                          type: object
  *                          $ref: '#/components/schemas/Product'
+ *          404:
+ *              description: Product not found.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          $ref: '#/components/schemas/NotFoundError'
  */
 app.get(`${BASE_URL}/product/:product_id`, (req: Request, res: Response) => {
     const productId = parseInt(req.params.product_id);
@@ -226,6 +238,7 @@ app.post<{}, Product, ProductDetails, {}, {}>(
 
         const productDetails = conversionResult.data;
         const productId = createProduct(productDetails);
+        // 201: resource created
         res.status(201).json({ productId });
     }
 );
@@ -268,6 +281,13 @@ app.options(`${BASE_URL}/product/:product_id`);
  *                      schema:
  *                          type: array
  *                          $ref: '#/components/schemas/Errors'
+ *          404:
+ *              description: Product not found.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          $ref: '#/components/schemas/NotFoundError'
  */
 app.put(
     `${BASE_URL}/product/:product_id`,
@@ -289,7 +309,7 @@ app.put(
         );
 
         if (productId === undefined)
-            res.status(400)
+            res.status(404)
                 .send({ errors: [`product ${productId} not found`] })
                 .end();
         else res.json({ productId });
@@ -319,20 +339,20 @@ app.options(`${BASE_URL}/product/:product_id`);
  *                      schema:
  *                          type: object
  *                          $ref: '#/components/schemas/Product'
- *          400:
- *              description: Invalid Request. Product not found.
+ *          404:
+ *              description: Product not found.
  *              content:
  *                  application/json:
  *                      schema:
  *                          type: object
- *                          $ref: '#/components/schemas/Errors'
+ *                          $ref: '#/components/schemas/NotFoundError'
  */
 app.delete(`${BASE_URL}/product/:product_id`, (req: Request, res: Response) => {
     const productId = parseInt(req.params.product_id);
 
     const deletedProductId = deleteProduct(productId);
     if (deletedProductId !== productId)
-        res.status(400)
+        res.status(404)
             .send({ errors: [`product ${productId} not found`] })
             .end();
     else res.json({ productId });
