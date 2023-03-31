@@ -65,6 +65,8 @@ const BASE_URL = '/api';
  *                      type: string
  *                  isString:
  *                      type: string
+ *                  isDefined:
+ *                      type: string
  *      NewProduct:
  *          type: object
  *          properties:
